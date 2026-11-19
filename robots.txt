@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dicaro.github.io/sitemap.xml
