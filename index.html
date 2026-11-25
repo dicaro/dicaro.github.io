@@ -247,6 +247,7 @@ ol.pubs li.flash{animation:flash 1.6s ease-out;border-radius:8px}
 .lang a:hover{color:var(--ink);background:var(--accent-soft)}
 .lang a[aria-current="page"]{background:var(--accent);color:var(--surface)}
 @media (max-width:860px){nav.index{position:sticky}.lang{position:absolute;right:16px;top:12px}}
+.avatar-wrap canvas.avatar{position:absolute;inset:0;touch-action:pan-y;cursor:crosshair}
 </style>
 </head>
 <body>
@@ -263,7 +264,7 @@ ol.pubs li.flash{animation:flash 1.6s ease-out;border-radius:8px}
 <main>
 <section id="profile">
   <div class="hero">
-    <div class="avatar-wrap"><img class="avatar" src="photo.jpg" alt="Luigi Di Caro" width="152" height="164" decoding="async" onerror="this.parentNode.remove()"></div>
+    <div class="avatar-wrap"><img class="avatar" src="photo.jpg" alt="Luigi Di Caro" width="600" height="648" decoding="async" onerror="this.parentNode.remove()"></div>
     <div class="hero-text">
       <div class="eyebrow">Curriculum vitae · November 2026</div>
       <h1 class="hero-name">Luigi Di Caro</h1>
@@ -1187,6 +1188,42 @@ window.addEventListener("hashchange", pubFromHash);
 renderProj(); renderStud(); renderPubs(); drawGraph(); syncConcept(); fromHash(); pubFromHash();
 </script>
 <script>
+/* Avatar ripple: the photo behaves like water under the cursor or a finger, then settles back to the still photo.
+   Skipped with reduced motion, and wherever the photo cannot be read as pixels (e.g. a local file). */
+(() => {
+  const img = document.querySelector("img.avatar"); if (!img) return;
+  document.querySelectorAll("canvas.avatar").forEach(c => c.remove());
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const start = () => {
+    const W = 304, H = 328, cv = document.createElement("canvas"); cv.width = W; cv.height = H; cv.className = "avatar"; cv.setAttribute("aria-hidden","true");
+    const ctx = cv.getContext("2d"); ctx.drawImage(img, 0, 0, W, H);
+    let S; try { S = ctx.getImageData(0,0,W,H).data; } catch(e) { return; }
+    img.parentNode.appendChild(cv);
+    const out = ctx.createImageData(W,H), O = out.data, w = W, h = H;
+    let a = new Float32Array(w*h), b = new Float32Array(w*h), mx = -1, my = -1, idle = 0, on = false;
+    const step = () => {
+      if (mx >= 0) { for (let y=-3;y<=3;y++) for (let x=-3;x<=3;x++) { if (x*x+y*y > 10) continue; const X = mx+x, Y = my+y; if (X>0&&X<w-1&&Y>0&&Y<h-1) a[Y*w+X] = 260; } }
+      let e = 0;
+      for (let y=1;y<h-1;y++) for (let x=1;x<w-1;x++) { const i = y*w+x, v = ((a[i-1]+a[i+1]+a[i-w]+a[i+w])/2 - b[i]) * 0.975; b[i] = v; e += v<0?-v:v; }
+      [a,b] = [b,a];
+      for (let y=0;y<H;y++) { for (let x=0;x<W;x++) {
+        let dx = 0, dy = 0;
+        if (x>0&&x<w-1&&y>0&&y<h-1) { const i = y*w+x; dx = Math.round((a[i-1]-a[i+1])*0.045); dy = Math.round((a[i-w]-a[i+w])*0.045); }
+        let sx = x+dx, sy = y+dy; sx = sx<0?0:sx>=W?W-1:sx; sy = sy<0?0:sy>=H?H-1:sy;
+        const o = (y*W+x)*4, s = (sy*W+sx)*4; O[o]=S[s]; O[o+1]=S[s+1]; O[o+2]=S[s+2]; O[o+3]=255; } }
+      ctx.putImageData(out,0,0);
+      idle = (e < 30 && mx < 0) ? idle+1 : 0;
+      if (idle > 10) { a.fill(0); b.fill(0); ctx.drawImage(img,0,0,W,H); on = false; return; }
+      requestAnimationFrame(step);
+    };
+    const at = ev => { const r = cv.getBoundingClientRect(), q = ev.touches ? ev.touches[0] : ev; mx = Math.round((q.clientX-r.left)*W/r.width); my = Math.round((q.clientY-r.top)*H/r.height);
+      if (!on) { on = true; requestAnimationFrame(step); } };
+    const leave = () => { mx = my = -1; };
+    cv.addEventListener("mousemove", at); cv.addEventListener("touchmove", at, {passive:true}); cv.addEventListener("touchstart", at, {passive:true});
+    cv.addEventListener("mouseleave", leave); cv.addEventListener("touchend", leave);
+  };
+  if (img.complete && img.naturalWidth) start(); else img.addEventListener("load", start, {once:true});
+})();
 /* GoatCounter: privacy-friendly, no cookies. Counts only on the public site, not in previews or local copies. */
 if (location.hostname === "dicaro.github.io") {
   const gc = document.createElement("script");
