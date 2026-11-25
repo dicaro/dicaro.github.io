@@ -254,7 +254,7 @@ ol.pubs li.flash{animation:flash 1.6s ease-out;border-radius:8px}
 <nav class="index" aria-label="Sections">
   <div class="brand">Luigi Di Caro<small>Associate Professor of Computer Science<br>University of Turin</small></div>
   <div class="lang" role="group" aria-label="Language">
-    <a href="index.html" hreflang="en" lang="en" data-lang="en" aria-current="page">EN</a><a href="it.html" hreflang="it" lang="it" data-lang="it">IT</a>
+    <a href="index.html" hreflang="en" lang="en" data-lang="en" data-goatcounter-click="lang-en" aria-current="page">EN</a><a href="it.html" hreflang="it" lang="it" data-lang="it" data-goatcounter-click="lang-it">IT</a>
   </div>
   <ol id="toc"><li><a href="#profile" data-id="profile">Profile</a></li><li><a href="#selected" data-id="selected">Selected papers</a></li><li><a href="#research" data-id="research">Research map</a></li><li><a href="#positions" data-id="positions">Career</a></li><li><a href="#projects" data-id="projects">Projects</a></li><li><a href="#supervision" data-id="supervision">Supervision</a></li><li><a href="#service" data-id="service">Service</a></li><li><a href="#teaching" data-id="teaching">Teaching</a></li><li><a href="#transfer" data-id="transfer">Impact</a></li><li><a href="#publications" data-id="publications">Publications</a></li></ol>
   <div class="navconcept" id="navConcept"></div>
@@ -276,12 +276,12 @@ ol.pubs li.flash{animation:flash 1.6s ease-out;border-radius:8px}
     <p>PhD in Computer Science (Turin, 2011, jointly supervised with Arizona State University). National Scientific Qualification as Full Professor in Computer Science (2025).</p>
   </div>
   <div class="ids">
-    <span>luigi.dicaro@unito.it</span>
-    <a href="https://orcid.org/0000-0002-7570-637X">ORCID</a>
-    <a href="https://scholar.google.com/citations?user=XQAvqi4AAAAJ">Google Scholar</a>
-    <a href="https://dblp.org/pid/12/5266.html">DBLP</a>
-    <a href="https://www.scopus.com/authid/detail.uri?authorId=57207954874">Scopus</a>
-    <a href="https://www.webofscience.com/wos/author/record/29514">Web of Science</a>
+    <a href="mailto:luigi.dicaro@unito.it" data-goatcounter-click="contact-email" data-goatcounter-title="Email">luigi.dicaro@unito.it</a>
+    <a href="https://orcid.org/0000-0002-7570-637X" data-goatcounter-click="out-orcid">ORCID</a>
+    <a href="https://scholar.google.com/citations?user=XQAvqi4AAAAJ" data-goatcounter-click="out-scholar">Google Scholar</a>
+    <a href="https://dblp.org/pid/12/5266.html" data-goatcounter-click="out-dblp">DBLP</a>
+    <a href="https://www.scopus.com/authid/detail.uri?authorId=57207954874" data-goatcounter-click="out-scopus">Scopus</a>
+    <a href="https://www.webofscience.com/wos/author/record/29514" data-goatcounter-click="out-wos">Web of Science</a>
   </div>
   <div class="figs" id="figs"><div class="fig"><b>118</b><span>papers</span></div><div class="fig"><b>30</b><span>h-index, Google Scholar</span></div><div class="fig"><b>21</b><span>h-index, Scopus</span></div><div class="fig"><b>3,336</b><span>citations, Google Scholar</span></div><div class="fig"><b>65</b><span>i10-index, Google Scholar</span></div><div class="fig"><b>16</b><span>PhD students supervised</span></div><div class="fig"><b>13</b><span>projects coordinated (8 EU, 5 national)</span></div></div>
   <div class="note">Citation metrics as of November 2026. The paper count excludes 4 edited volumes and 1 preprint, which are in the full list.</div>
@@ -1185,6 +1185,15 @@ function pubFromHash(){ const m = location.hash.match(/^#p-(\d+)$/); if (m) goPu
 window.addEventListener("hashchange", pubFromHash);
 
 renderProj(); renderStud(); renderPubs(); drawGraph(); syncConcept(); fromHash(); pubFromHash();
+</script>
+<script>
+/* GoatCounter: privacy-friendly, no cookies. Counts only on the public site, not in previews or local copies. */
+if (location.hostname === "dicaro.github.io") {
+  const gc = document.createElement("script");
+  gc.async = true; gc.src = "https://gc.zgo.at/count.js";
+  gc.dataset.goatcounter = "https://dicaro.goatcounter.com/count";
+  document.body.appendChild(gc);
+}
 </script>
 
 
